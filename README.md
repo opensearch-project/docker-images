@@ -1,11 +1,6 @@
-## My Project
+## Opensearch Docker Images
 
-TODO: Fill this README out!
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+Main repository where Dockerfiles for Opensearch are hosted. These docker files are used to build images for Opensearch Offical Images 
 
 ## Security
 
