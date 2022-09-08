@@ -8,7 +8,7 @@ ARG OPENSEARCH_HOME=/usr/share/opensearch
 ARG OPENSEARCH_PATH_CONF=$OPENSEARCH_HOME/config
 ARG SECURITY_PLUGIN_DIR=$OPENSEARCH_HOME/plugins/opensearch-security
 ARG PERFORMANCE_ANALYZER_PLUGIN_CONFIG_DIR=$OPENSEARCH_PATH_CONF/opensearch-performance-analyzer
-ARG OS_VERSION=2.1.0
+ARG OS_VERSION=2.2.1
 # Update packages
 # Install the tools we need: tar and gzip to unpack the OpenSearch tarball, and shadow-utils to give us `groupadd` and `useradd`.
 # Install which to allow running of securityadmin.sh
