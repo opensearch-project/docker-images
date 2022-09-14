@@ -1,3 +1,16 @@
+# Copyright OpenSearch Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+
+# This dockerfile generates an AmazonLinux-based image containing an OpenSearch installation.
+# It assumes that the working directory contains these files: an OpenSearch tarball (opensearch.tgz), log4j2.properties, opensearch.yml, opensearch-docker-entrypoint.sh, opensearch-onetime-setup.sh.
+# Build arguments:
+#   VERSION: Required. Used to label the image.
+#   UID: Optional. Specify the opensearch userid. Defaults to 1000.
+#   GID: Optional. Specify the opensearch groupid. Defaults to 1000.
+#   OPENSEARCH_HOME: Optional. Specify the opensearch root directory. Defaults to /usr/share/opensearch.
+
+
 ########################### Stage 0 ########################
 FROM amazonlinux:2 AS linux_stage_0
 
@@ -50,6 +63,7 @@ FROM amazonlinux:2
 ARG UID=1000
 ARG GID=1000
 ARG OPENSEARCH_HOME=/usr/share/opensearch
+ARG OS_VERSION=2.2.1
 
 RUN yum update -y && yum install -y tar gzip shadow-utils which && yum clean all
 
@@ -86,7 +100,7 @@ EXPOSE 9200 9300 9600 9650
 # Label
 LABEL org.label-schema.schema-version="1.0" \
   org.label-schema.name="opensearch" \
-  org.label-schema.version="2.0.1" \
+  org.label-schema.version="$OS_VERSION" \
   org.label-schema.url="https://opensearch.org" \
   org.label-schema.vcs-url="https://github.com/OpenSearch" \
   org.label-schema.license="Apache-2.0" \
