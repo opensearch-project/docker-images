@@ -98,13 +98,12 @@ RUN ./opensearch-onetime-setup.sh
 EXPOSE 9200 9300 9600 9650
 
 # Label
-LABEL org.label-schema.schema-version="1.0" \
-  org.label-schema.name="opensearch" \
-  org.label-schema.version="$OS_VERSION" \
-  org.label-schema.url="https://opensearch.org" \
-  org.label-schema.vcs-url="https://github.com/OpenSearch" \
-  org.label-schema.license="Apache-2.0" \
-  org.label-schema.vendor="OpenSearch"
+LABEL org.opencontainers.image.title="opensearch" \
+  org.opencontainers.image.version="$OS_VERSION" \
+  org.opencontainers.image.url="https://opensearch.org" \
+  org.opencontainers.image.source="https://github.com/opensearch-project/docker-images" \
+  org.opencontainers.image.licenses="Apache-2.0" \
+  org.opencontainers.image.vendor="OpenSearch"
 
 # CMD to run
  ENTRYPOINT ["./opensearch-docker-entrypoint.sh"]
