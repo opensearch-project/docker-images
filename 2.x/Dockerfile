@@ -32,9 +32,6 @@ RUN groupadd -g $GID opensearch && \
     adduser -u $UID -g $GID -d $OPENSEARCH_HOME opensearch && \
     mkdir $TEMP_DIR
 
-RUN mkdir /usr/share/elasticsearch
-WORKDIR /usr/share/elasticsearch
-
 RUN set -eux ; \
     cur_arch="" ; \
     case "$(arch)" in \
