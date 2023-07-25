@@ -102,7 +102,7 @@ LABEL org.label-schema.schema-version="1.0" \
   org.label-schema.name="opensearch" \
   org.label-schema.version="$OS_VERSION" \
   org.label-schema.url="https://opensearch.org" \
-  org.label-schema.vcs-url="https://github.com/OpenSearch" \
+  org.label-schema.vcs-url="https://github.com/opensearch-project/OpenSearch" \
   org.label-schema.license="Apache-2.0" \
   org.label-schema.vendor="OpenSearch"
 
