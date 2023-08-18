@@ -6,16 +6,16 @@
 # It assumes that the working directory contains these files: an OpenSearch tarball (opensearch.tgz), log4j2.properties, opensearch.yml, opensearch-docker-entrypoint.sh, opensearch-onetime-setup.sh.
 # Build arguments:
 #   VERSION: Required. Used to label the image.
-#   UID: Optional. Specify the opensearch userid. Defaults to 1000.
-#   GID: Optional. Specify the opensearch groupid. Defaults to 1000.
+#   UID: Optional. Specify the opensearch userid. Defaults to 10000.
+#   GID: Optional. Specify the opensearch groupid. Defaults to 10000.
 #   OPENSEARCH_HOME: Optional. Specify the opensearch root directory. Defaults to /usr/share/opensearch.
 
 
 ########################### Stage 0 ########################
 FROM amazonlinux:2 AS linux_stage_0
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=10000
+ARG GID=10000
 ARG TEMP_DIR=/tmp/opensearch
 ARG OPENSEARCH_HOME=/usr/share/opensearch
 ARG OPENSEARCH_PATH_CONF=$OPENSEARCH_HOME/config
@@ -60,8 +60,8 @@ RUN if [[ -d $PERFORMANCE_ANALYZER_PLUGIN_CONFIG_DIR ]] ; then mv $OPENSEARCH_PA
 # Copy working directory to the actual release docker images
 FROM amazonlinux:2
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=10000
+ARG GID=10000
 ARG OPENSEARCH_HOME=/usr/share/opensearch
 ARG OS_VERSION=2.5.0
 
