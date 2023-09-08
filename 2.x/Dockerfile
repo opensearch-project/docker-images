@@ -21,7 +21,7 @@ ARG OPENSEARCH_HOME=/usr/share/opensearch
 ARG OPENSEARCH_PATH_CONF=$OPENSEARCH_HOME/config
 ARG SECURITY_PLUGIN_DIR=$OPENSEARCH_HOME/plugins/opensearch-security
 ARG PERFORMANCE_ANALYZER_PLUGIN_CONFIG_DIR=$OPENSEARCH_PATH_CONF/opensearch-performance-analyzer
-ARG OS_VERSION=2.5.0
+ARG OS_VERSION=2.9.0
 # Update packages
 # Install the tools we need: tar and gzip to unpack the OpenSearch tarball, and shadow-utils to give us `groupadd` and `useradd`.
 # Install which to allow running of securityadmin.sh
@@ -38,15 +38,16 @@ WORKDIR /usr/share/elasticsearch
 RUN set -eux ; \
     cur_arch="" ; \
     case "$(arch)" in \
-        aarch64) cur_arch='arm64' ;; \
-        x86_64)  cur_arch='x64' ;; \
-        *) echo >&2 ; echo >&2 "Unsupported architecture $(arch)" ; echo >&2 ; exit 1 ;; \
+    aarch64) cur_arch='arm64' ;; \
+    x86_64)  cur_arch='x64' ;; \
+    *) echo >&2 ; echo >&2 "Unsupported architecture $(arch)" ; echo >&2 ; exit 1 ;; \
     esac ; \
     curl --retry 10 -S -L --output $TEMP_DIR/opensearch.tar.gz https://artifacts.opensearch.org/releases/bundle/opensearch/$OS_VERSION/opensearch-$OS_VERSION-linux-$cur_arch.tar.gz; \
     curl --output $TEMP_DIR/opensearch.pgp https://artifacts.opensearch.org/publickeys/opensearch.pgp; \
     gpg --import $TEMP_DIR/opensearch.pgp; \
     curl --output $TEMP_DIR/opensearch.tar.gz.sig https://artifacts.opensearch.org/releases/bundle/opensearch/$OS_VERSION/opensearch-$OS_VERSION-linux-$cur_arch.tar.gz.sig; \
     gpg --verify $TEMP_DIR/opensearch.tar.gz.sig $TEMP_DIR/opensearch.tar.gz;
+
 
 RUN tar --warning=no-timestamp -zxf $TEMP_DIR/opensearch.tar.gz -C $OPENSEARCH_HOME --strip-components=1 && \
     mkdir -p $OPENSEARCH_HOME/data && chown -Rv $UID:$GID $OPENSEARCH_HOME/data && \
@@ -63,7 +64,7 @@ FROM amazonlinux:2
 ARG UID=1000
 ARG GID=1000
 ARG OPENSEARCH_HOME=/usr/share/opensearch
-ARG OS_VERSION=2.5.0
+ARG OS_VERSION=2.9.0
 
 RUN yum update -y && yum install -y tar gzip shadow-utils which && yum clean all
 
@@ -95,17 +96,21 @@ ARG DISABLE_INSTALL_DEMO_CONFIG=true
 ARG DISABLE_SECURITY_PLUGIN=false
 RUN ./opensearch-onetime-setup.sh
 
+# Change permission to make it work when securityContext forces
+# a random UID
+RUN chmod -R 777 $OPENSEARCH_HOME
+
 EXPOSE 9200 9300 9600 9650
 
 # Label
 LABEL org.label-schema.schema-version="1.0" \
-  org.label-schema.name="opensearch" \
-  org.label-schema.version="$OS_VERSION" \
-  org.label-schema.url="https://opensearch.org" \
-  org.label-schema.vcs-url="https://github.com/OpenSearch" \
-  org.label-schema.license="Apache-2.0" \
-  org.label-schema.vendor="OpenSearch"
+    org.label-schema.name="opensearch" \
+    org.label-schema.version="$OS_VERSION" \
+    org.label-schema.url="https://opensearch.org" \
+    org.label-schema.vcs-url="https://github.com/OpenSearch" \
+    org.label-schema.license="Apache-2.0" \
+    org.label-schema.vendor="OpenSearch"
 
 # CMD to run
- ENTRYPOINT ["./opensearch-docker-entrypoint.sh"]
- CMD ["opensearch"]
+ENTRYPOINT ["/usr/share/opensearch/opensearch-docker-entrypoint.sh"]
+CMD ["opensearch"]
